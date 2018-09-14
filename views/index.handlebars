@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="jumbotron signUpJumbo" style="display:none">
+                <h1>Welcome to Help Finder!</h1>
+                <h4>We help certified mental health professionals reach those who need immediate assistance with ease!</h4>
+                <hr>
+                <a href="/signup/helper"><button class="btn btn-outline-primary signUpButton" data-target="helper">Sign
+                        Up as a Helper</button></a>
+                <a href="/signup/seeker"><button class="btn btn-outline-success signUpButton" data-target="seeker">Sign
+                        Up as a Seeker</button></a>
+            </div>
+            <div class="jumbotron welcomeHelper" style="display:none">
+                <h1>Welcome back Helper!</h1>
+                <h4>Click on the button below to find out who you can help today!</h4>
+                <hr>
+                <a href="/helpSomeone"><button class="btn btn-outline-primary helpButton" data-target="helper">Help
+                        Someone!</button></a>
+            </div>
+            <div class="jumbotron welcomeSeeker" style="display:none">
+                <h1>Welcome back Seeker!</h1>
+                <h4>If you aren't feeling particularly well and would like some assistance click on the button below!</h4>
+                <hr>
+                <button class="btn btn-outline-primary seekButton" data-target="seeker">Seek
+                    Assistance!</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var userObj = JSON.parse(localStorage.getItem('userObj'))
+        if (userObj) {
+            $(".signUpJumbo").hide()
+            if (userObj.isHelper) {
+                $(".welcomeHelper").show()
+            } else {
+                $(".welcomeSeeker").show()
+            }
+        } else {
+            $(".signUpJumbo").show()
+            $(".welcomeHelper").hide()
+            $(".welcomeSeeker").hide()
+        }
+        $(".seekButton").click(function () {
+            if (!userObj) {
+                alert("You need to sign in first!")
+                $(".goHome")[0].click()
+            }
+            $.ajax("/seekHelp", {
+                type: "POST",
+                data: userObj
+            }).then(function (response, status) {
+                console.log(status)
+                if (status === 'success') {
+                    window.location.href += "seekHelp/success"
+                } else {
+                    alert(status)
+                }
+            });
+        })
+    })
+
+
+
+</script>

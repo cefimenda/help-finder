@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-12">
+            <h3 class="my-3">Login</h3>
+            <form id="survey">
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Name</label>
+                    <input type="text" class="form-control" id="nameInput" name="name" placeholder="Jane Doe">
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Phone Number</label>
+                    <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number Here">
+                </div>
+                <button id="submitButton" type="submit" class="btn btn-primary"> Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#submitButton").click(function (event) {
+            event.preventDefault();
+            var name = $("#survey [name=name]").val().trim();
+            var phone = $("#survey [name=phone]").val().trim();
+            var loginObj = { name, phone }
+            console.log(loginObj)
+            $.ajax("/login", {
+                type: "POST",
+                data: loginObj
+            }).then(function (response, status) {
+                if (status === 'success') {
+                    if (response.message === "loginSuccess") {
+                        var userObj = response.user
+                        localStorage.setItem("userObj", JSON.stringify(userObj))
+                        $(".goHome")[0].click()
+                    } else {
+                        alert(response)
+                    }
+                } else {
+                    alert(status)
+                }
+            });
+        });
+    });
+</script>
