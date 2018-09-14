@@ -1,12 +1,14 @@
 const Table = require("mysql-simplified"); //This is a module that I created!
+require('dotenv').config()
 
 let dbConfig = {
-    host: 'bbj31ma8tye2kagi.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-    user: 'gclab7ctsyq2e8ee',
-    password: 'l6dxttuilqzfa05m',
-    port: 3306,
-    database: 'umixo19rma9oxe49'
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    database: process.env.DB_DATABASE
 }
+console.log(dbConfig)
 
 let users = new Table('helpFinder', dbConfig);
 users.connect();

@@ -5,30 +5,11 @@ let seekerSurvey = require("../data/surveys").seeker
 let helperSurvey = require("../data/surveys").helper
 
 module.exports = function (app) {
-
-    app.get("/" || "#", function (req, res) {
-        res.render("index", {});
-    });
-    app.get("/signup/:userType", function (req, res) {
-        var type = req.params.userType
-        if (type === "helper") {
-            res.render("survey", { user: user, survey: helperSurvey, type: 'Helper' })
-        }
-        else if (type === "seeker") {
-            res.render("survey", { user: user, survey: seekerSurvey, type: 'Seeker' })
-        } else {
-            res.send("404, Page not found.")
-        }
-    })
     app.post("/signup/:userType", function (req, res) {
         users.append(req.body).then(function (response) {
             res.json(response)
         })
     })
-    app.get("/signup/:userType/success", function (req, res) {
-        res.render("successMessage", { type: 'signup' })
-    })
-
     app.post("/seekHelp", function (req, res) {
         var request = {
             seeker_name: req.body.name,
@@ -37,12 +18,6 @@ module.exports = function (app) {
         seekingRequests.append(request).then(function (response) {
             res.send("response")
         })
-    })
-    app.get("/seekHelp/success", function (req, res) {
-        res.render("successMessage", { type: 'seekHelp' })
-    })
-    app.get("/login", function (req, res) {
-        res.render("loginPage", {})
     })
     app.post("/login", function (req, res) {
         console.log(req.body)
@@ -56,7 +31,10 @@ module.exports = function (app) {
             res.send("Can't find a user with this credentials, please try again or sign up from the home page.")
         })
     })
-    app.get("/helpSomeone", function (req, res) {
-    })
+    app.get("/api/activeSeekers",function(req,res){
+        seekingRequests.getItem('request_id',0,">").then(function(response){
+            res.send(response)
+        });
+    });
 
 };
