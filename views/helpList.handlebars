@@ -1,0 +1,81 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary mt-2 checkoutButton" style="width:100%; overflow-wrap:break-word">I
+                confirm taking responsibility for the assistance <br class="d-md-none">requests I have chosen <br class="d-lg-none">
+                below and I have noted down <br>the
+                necessary information about this request.</button>
+
+        </div>
+        {{#each response}}
+        <div class="col-12 col-lg-6">
+            <div class="card my-3 p-3 w-100" request-id={{this.request_id}}>
+                <div class="row topRow my-2">
+                    <div class="col-6 requestId">
+                        <div class="badge badge-warning">Request Id: {{this.request_id}}</div>
+                    </div>
+                    <div class="col-6 text-right match">
+                        <div class="badge badge-primary ">Match: </div>
+                    </div>
+                </div>
+                <div class="row middleRow">
+                    <div class="col-4">
+                        <img src={{this.photo}} class="img-thumbnail" style="max-width:150px; max-height:150px">
+                    </div>
+                    <div class="col-8 px-5 seekerName">
+                        <h3>{{this.seeker_name}}</h3>
+                    </div>
+                </div>
+                <div class="row bottomRow">
+                    <div class="col-8">Phone Number: {{this.phone}}</div>
+                    <div class="input-group-text ml-auto mr-3">
+                        <div class="col-4">
+                            <input type="Checkbox">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var userObj = JSON.parse(localStorage.getItem('userObj'))
+        if (!userObj || userObj.isHelper === 0) {
+            $(".goHome")[0].click()
+        }
+        getMatches()
+        $(".checkoutButton").click(function () {
+            var assisting = []
+            for (var i = 0; i < $(":checked").length; i++) {
+                var id = $($(":checked")[i]).parent().parent().parent().parent().attr("request-id")
+                assisting.push(id)
+            }
+            console.log(assisting)
+            $.ajax("/helpSomeone", {
+                type: "DELETE",
+                data: { assisting }
+            }).then(function (response, status) {
+                location.reload()
+            })
+        });
+    })
+
+    function getMatches() {
+        $.ajax("/api/getMatches", {
+            type: "POST",
+            data: JSON.parse(localStorage.getItem('userObj'))
+        }).then(function (response, status) {
+            var matchObj = response.matchObj
+            var phoneObj = response.phoneObj
+            for (var i = 0; i < $(".card").length; i++) {
+                var card = $($(".card")[i])
+                var thisId = card.attr('request-id')
+                var matchBadge = card.children().first().children().first().next().children().first()[0]
+                matchBadge.innerText += " " + matchObj[thisId] + "/5"
+            }
+        })
+    }
+</script>

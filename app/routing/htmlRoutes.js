@@ -1,6 +1,15 @@
-module.exports = function(app) {
+let users = require("../data/database").users
+let seekingRequests = require("../data/database").seekingRequests
+
+let seekerSurvey = require("../data/surveys").seeker
+let helperSurvey = require("../data/surveys").helper
+
+module.exports = function (app) {
     app.get("/helpSomeone", function (req, res) {
-        res.render("helpList",{})
+        seekingRequests.join().then(function (response) {
+            response.stringified = JSON.stringify(response)
+            res.render("helpList", {response})
+        })
     })
     app.get("/login", function (req, res) {
         res.render("loginPage", {})
@@ -14,10 +23,10 @@ module.exports = function(app) {
     app.get("/signup/:userType", function (req, res) {
         var type = req.params.userType
         if (type === "helper") {
-            res.render("survey", { user: user, survey: helperSurvey, type: 'Helper' })
+            res.render("survey", { survey: helperSurvey, type: 'Helper' })
         }
         else if (type === "seeker") {
-            res.render("survey", { user: user, survey: seekerSurvey, type: 'Seeker' })
+            res.render("survey", {survey: seekerSurvey, type: 'Seeker' })
         } else {
             res.send("404, Page not found.")
         }

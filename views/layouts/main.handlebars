@@ -26,12 +26,15 @@
                     <a class="nav-link goHome" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
-            <span class="navbar-text d-none d-lg-block usernameDisplay">
-            </span>
-            <ul class = "navbar-nav ml-auto">
-            <li>
-                <a class="nav-link loginLink" href="/login"> <span class="sr-only"></span></a>
-            </li>
+
+            <ul class="navbar-nav ml-auto">
+                <li>
+                    <a class="nav-link loginLink" href="/login"> <span class="sr-only"></span></a>
+                </li>
+                <li>
+                    <span class="navbar-text d-none d-lg-block ml-2 border-left pl-4 usernameDisplay">
+                    </span>
+                </li>
             </ul>
         </div>
     </nav>
@@ -43,7 +46,7 @@
         if (userObj) {
             $(".usernameDisplay").text('Welcome ' + userObj.name + '!')
             $(".loginLink").text("Logout")
-            $(".loginLink").attr("href","/")
+            $(".loginLink").attr("href", "/")
         } else {
             $(".usernameDisplay").text('Welcome Guest!')
             $(".loginLink").text("Login")
@@ -55,4 +58,5 @@
         })
     })
 </script>
+
 </html>

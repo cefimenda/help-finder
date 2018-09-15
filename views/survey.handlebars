@@ -44,7 +44,7 @@
             var phone = $("#survey [name=phone]").val().trim();
             var scores = [];
             for (var i = 0; i < $(".answers").length; i++) {
-                scores.push(Number($($(".answers")[i]).find(":selected").text()));
+                scores.push($($(".answers")[i]).find(":selected").text());
             };
             var userObj = { name, photo, phone, scores: JSON.stringify(scores), isHelper }
             localStorage.setItem("userObj", JSON.stringify(userObj))

@@ -12,8 +12,22 @@ console.log(dbConfig)
 
 let users = new Table('helpFinder', dbConfig);
 users.connect();
-let seekingRequests = new Table('seekingAssistance',dbConfig);
+let seekingRequests = new Table('seekingAssistance', dbConfig);
 seekingRequests.connect();
+
+seekingRequests.join = function () {
+    return new Promise((resolve, reject) => {
+        var query = "SELECT seekingAssistance.request_id,seekingAssistance.`seeker_name`,seekingAssistance.`seeker_id`,helpFinder.phone,helpFinder.scores,helpFinder.photo FROM seekingAssistance LEFT JOIN helpFinder ON seekingAssistance.seeker_id =helpFinder.id"
+        this.connection.query(query, function (err, res) {
+            if (err) {
+                console.log(err)
+                reject(err)
+            }
+            resolve(res)
+        });
+    })
+}
+
 
 module.exports = {
     users,
