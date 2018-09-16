@@ -81,11 +81,10 @@
                 var thisId = card.attr('request-id')
                 console.log(matchObj[thisId])
                 if (matchObj[thisId] < 3) {
-                    console.log(card.parent())
-                    card.hide()
+                    var parentCard = card.parent()
+                    parentCard.addClass('d-none')
                 } else {
                     var matchBadge = card.children().first().children().first().next().children().first()[0]
-                    console.log(matchBadge)
                     matchBadge.innerText += " " + matchObj[thisId] + "/5"
                 }
             }

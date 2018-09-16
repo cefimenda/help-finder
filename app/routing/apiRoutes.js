@@ -76,7 +76,6 @@ module.exports = function (app) {
                 var avg = Math.round(sum / comparList.length)
                 matchObj[requestId] = avg
             }
-            console.log(matchObj)
             res.send({ matchObj })
         })
 
