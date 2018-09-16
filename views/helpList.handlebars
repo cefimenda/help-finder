@@ -75,14 +75,17 @@
         }).then(function (response, status) {
             var matchObj = response.matchObj
             var phoneObj = response.phoneObj
+            var lenght = $(".card").length
             for (var i = 0; i < $(".card").length; i++) {
                 var card = $($(".card")[i])
                 var thisId = card.attr('request-id')
                 console.log(matchObj[thisId])
                 if (matchObj[thisId] < 3) {
-                    card.remove()
+                    console.log(card.parent())
+                    card.hide()
                 } else {
                     var matchBadge = card.children().first().children().first().next().children().first()[0]
+                    console.log(matchBadge)
                     matchBadge.innerText += " " + matchObj[thisId] + "/5"
                 }
             }

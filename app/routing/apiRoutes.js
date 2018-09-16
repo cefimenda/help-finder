@@ -21,7 +21,6 @@ module.exports = function (app) {
     })
     app.post("/login", function (req, res) {
         users.getItem('phone', req.body.phone).then(function (response) {
-            console.log(response)
             for (var i in response) {
                 if (response[i].name === req.body.name) {
                     res.send({ message: 'loginSuccess', user: response[i] })
@@ -48,15 +47,14 @@ module.exports = function (app) {
         var userObj = req.body
         console.log(userObj.scores)
         var userScores = JSON.parse(userObj.scores)
+        console.log(userScores)
         var matchObj = {}
         //add joint table
         seekingRequests.join().then(function (response) {
-            console.log(response)
             for (var i in response) {
                 var match;
                 var requestId = response[i].request_id
                 var seekerId = response[i].seeker_id
-                console.log(response[i].scores)
                 var seekerScores = JSON.parse(response[i].scores)
                 var comparList = []
                 for (var n in userScores) {
@@ -78,6 +76,7 @@ module.exports = function (app) {
                 var avg = Math.round(sum / comparList.length)
                 matchObj[requestId] = avg
             }
+            console.log(matchObj)
             res.send({ matchObj })
         })
 
