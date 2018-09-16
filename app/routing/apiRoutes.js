@@ -21,8 +21,9 @@ module.exports = function (app) {
     })
     app.post("/login", function (req, res) {
         users.getItem('phone', req.body.phone).then(function (response) {
+            console.log(response)
             for (var i in response) {
-                if (response[0].name === req.body.name) {
+                if (response[i].name === req.body.name) {
                     res.send({ message: 'loginSuccess', user: response[i] })
                     return
                 }
@@ -45,6 +46,7 @@ module.exports = function (app) {
     })
     app.post("/api/getMatches", function (req, res) {
         var userObj = req.body
+        console.log(userObj.scores)
         var userScores = JSON.parse(userObj.scores)
         var matchObj = {}
         //add joint table
@@ -54,6 +56,7 @@ module.exports = function (app) {
                 var match;
                 var requestId = response[i].request_id
                 var seekerId = response[i].seeker_id
+                console.log(response[i].scores)
                 var seekerScores = JSON.parse(response[i].scores)
                 var comparList = []
                 for (var n in userScores) {
