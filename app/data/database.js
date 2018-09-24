@@ -10,9 +10,9 @@ let dbConfig = {
 }
 console.log(dbConfig)
 
-let users = new Table('helpFinder', dbConfig);
+let users = new Table('helpFinder', process.env.JAWSDB_URL || dbConfig);
 users.connect();
-let seekingRequests = new Table('seekingAssistance', dbConfig);
+let seekingRequests = new Table('seekingAssistance',  process.env.JAWSDB_URL || dbConfig);
 seekingRequests.connect();
 
 seekingRequests.join = function () {

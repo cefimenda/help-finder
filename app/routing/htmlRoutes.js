@@ -18,7 +18,6 @@ module.exports = function (app) {
         res.render("successMessage", { type: 'seekHelp' })
     })
     app.get("/signup/:userType/success", function (req, res) {
-        console.log("signup")
         res.render("successMessage", { type: 'signup' })
     })
     app.get("/signup/:userType", function (req, res) {
